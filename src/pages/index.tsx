@@ -1,17 +1,42 @@
+import { FormEvent, useState } from 'react';
+import { api } from '../lib/axios';
+import Image from 'next/image'
+import appPreviewImg from '../assets/app-nlw-copa-preview.png'
+import usersAvatarExampleImg from '../assets/users-avatar-example.png'
+import iconCheck from '../assets/icon-check.svg'
+import logoImp from '../assets/logo.svg'
 interface HomeProps {
   poolCount: number;
   guessCount: number;
   userCount: number;
 }
 
-import Image from 'next/image'
-import appPreviewImg from '../assets/app-nlw-copa-preview.png'
-import usersAvatarExampleImg from '../assets/users-avatar-example.png'
-import logoImp from '../assets/logo.svg'
-import iconCheck from '../assets/icon-check.svg'
-import { api } from '../lib/axios';
 
 export default function Home(props: HomeProps) {
+
+  const [poolTitle, setPoolTitle] = useState('')
+
+  async function createPool(event: FormEvent) {
+    event.preventDefault()
+
+    try {
+      const response = await api.post('/pools', {
+        title: poolTitle,
+      });
+
+      const { code } = response.data
+
+        // Vai copiar o conteudo da variavel code no clipboard do usuario
+      await navigator.clipboard.writeText(code)
+
+      alert('Bolão criado com sucesso! Código copiado na sua área de transferência!')
+      setPoolTitle('');
+
+    } catch(err) {
+      console.log(err)
+      alert('Falha ao criar o bolão, tente novamente!')
+    }
+  }
 
   return (
     <div className='max-w-[1124px] h-screen mx-auto grid grid-cols-2 items-center gap-28'>
@@ -29,12 +54,14 @@ export default function Home(props: HomeProps) {
           </strong>
         </div>
 
-        <form className='mt-10 flex gap-2'>
+        <form onSubmit={createPool} className='mt-10 flex gap-2'>
           <input 
             required 
             placeholder='Qual nome do seu Bolão?' 
             type="text" 
-            className='flex-1 px-6 py-4 rounded bg-gray-800 border border-gray-600 text-sm'
+            onChange={event=>setPoolTitle(event.target.value)}
+            value={poolTitle}
+            className='flex-1 px-6 py-4 rounded bg-gray-800 border border-gray-600 text-sm text-gray-100'
           />
           <button 
             type="submit"
