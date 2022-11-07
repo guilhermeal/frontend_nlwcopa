@@ -1,5 +1,5 @@
 <div align="center" id="top"> 
-  <img src="https://github.com/guilhermeal/frontend_nlwcopa/blob/6e427a98bb800e45ce2a5a1f036d2a8bc43ddafe/public/print-page.png" alt="Web Application" />
+  <img src="https://github.com/guilhermeal/frontend_nlwcopa/blob/5f9df3c83c9254c657690b13da8e8754c4c806ea/public/print-page.png" alt="Web Application" />
 
   &#xa0;
 
